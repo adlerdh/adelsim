@@ -1,0 +1,11 @@
+.DS_Store
+.vscode/
+
+build*/
+**/build*/
+
+old/
+**/old/
+
+notes.txt
+test.cxx
