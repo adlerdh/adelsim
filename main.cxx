@@ -89,6 +89,7 @@ int main(int argc, char* argv[])
   double k = 100.0;
   double init_angle = 45.0;
   bool drive = false; // drive the pendulum
+  bool damping = false; // velocity damping
   std::string system_string;
 
   CLI::App app{"Pendumonium"};
@@ -99,6 +100,7 @@ int main(int argc, char* argv[])
   app.add_option("--k", k, "Spring constant");
   app.add_option("--angle", init_angle, "Initial angle (deg)");
   app.add_flag("--drive", drive, "Enable driving force");
+  app.add_flag("--damping", damping, "Enable velocity damping force");
 
   CLI11_PARSE(app, argc, argv);
 
@@ -285,8 +287,8 @@ int main(int argc, char* argv[])
   const double max_bar_pixel_width = 0.5 * window.getSize().x;
   const double pixel_T_joules = max_bar_pixel_width / E0; // pixels per Joule
 
-  const ForceFunc force = [&system_type](const VectorXd& q, const VectorXd& qd, double t) {
-    if (system_type == SystemType::Spring) {
+  const ForceFunc force = [&damping](const VectorXd& q, const VectorXd& qd, double t) {
+    if (damping) {
       return damping_force(q, qd, t);
     }
     else {

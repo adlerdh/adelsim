@@ -15,30 +15,12 @@ endif()
 set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
 
 # ----------------------------
-# Dependency options
+# Dependencies
 # ----------------------------
 
 # Eigen
 set(EIGEN_BUILD_TESTING OFF CACHE BOOL "" FORCE)
 set(EIGEN_BUILD_DOC OFF CACHE BOOL "" FORCE)
-
-# autodiff
-set(AUTODIFF_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(AUTODIFF_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(AUTODIFF_BUILD_PYTHON OFF CACHE BOOL "" FORCE)
-set(AUTODIFF_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-
-# SFML
-set(SFML_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(SFML_BUILD_TEST_SUITE OFF CACHE BOOL "" FORCE)
-set(SFML_BUILD_DOC OFF CACHE BOOL "" FORCE)
-
-# CLI11
-set(CLI11_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-
-# ----------------------------
-# Dependencies
-# ----------------------------
 
 FetchContent_Declare(
   eigen
@@ -48,6 +30,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(eigen)
 
+# autodiff
+set(AUTODIFF_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(AUTODIFF_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(AUTODIFF_BUILD_PYTHON OFF CACHE BOOL "" FORCE)
+set(AUTODIFF_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+
 FetchContent_Declare(
   autodiff
   GIT_REPOSITORY https://github.com/autodiff/autodiff.git
@@ -56,6 +44,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(autodiff)
 
+# CLI11
+set(CLI11_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+
 FetchContent_Declare(
   CLI11
   GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
@@ -63,6 +54,11 @@ FetchContent_Declare(
   GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(CLI11)
+
+# SFML
+set(SFML_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_TEST_SUITE OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_DOC OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
   sfml
@@ -122,14 +118,9 @@ else()
   target_link_libraries(adelsim PRIVATE sfml-graphics sfml-window sfml-system)
 endif()
 
-# Apple: avoid directory-wide CMAKE_C_FLAGS/CMAKE_CXX_FLAGS edits.
 if(APPLE)
   target_compile_options(adelsim PRIVATE -Wno-error=unused-command-line-argument)
 endif()
-
-# ----------------------------
-# Optional dev toggles
-# ----------------------------
 
 option(ADELSIM_ENABLE_ASAN "Enable AddressSanitizer (non-MSVC)" OFF)
 if(ADELSIM_ENABLE_ASAN AND NOT MSVC)

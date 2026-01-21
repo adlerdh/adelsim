@@ -54,7 +54,7 @@ VectorXd damping_force(const VectorXd& q, const VectorXd& qd, double /*t*/)
 {
   VectorXd Q(q.size());
   Q.setZero();
-  double damp = 0.50;
+  double damp = 0.10;
   Q = -damp * qd;
   return Q;
 }
